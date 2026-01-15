@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все для майна</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* MacOS-style font and basics */
+        :root {
+            --primary-color: #0071e3;
+            --success-color: #32d74b;
+            --warning-color: #ff9f0a;
+            --error-color: #ff453a;
+            --background-color: #0d0f12;
+            --card-bg: #1a1c20;
+            --border-color: #33373f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #aeaeb2;
+            --blue-accent: #0084ff;
+            --emerald-accent: #4cd964;
+            --cyan-accent: #5ac8fa;
+            --purple-accent: #af52de;
+            --shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .macos-window {
+            background: var(--background-color);
+            border-radius: 6px;
+            margin: 20px auto;
+            max-width: 1400px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        /* MacOS title bar */
+        .title-bar {
+            height: 28px;
+            background: #1e2126;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .close-btn {
+            background-color: var(--error-color);
+        }
+
+        .minimize-btn {
+            background-color: var(--warning-color);
+        }
+
+        .maximize-btn {
+            background-color: var(--success-color);
+        }
+
+        .window-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Main content */
+        .content {
+            padding: 30px;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 24px;
+        }
+
+        .nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Cards grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 24px;
+        }
+
+        .java-icon {
+            background: linear-gradient(135deg, rgba(255, 136, 77, 0.2), rgba(255, 72, 61, 0.2));
+            color: #ff884d;
+        }
+
+        .fabric-icon {
+            background: linear-gradient(135deg, rgba(175, 82, 222, 0.2), rgba(139, 92, 246, 0.2));
+            color: #af52de;
+        }
+
+        .launcher-icon {
+            background: linear-gradient(135deg, rgba(0, 132, 255, 0.2), rgba(90, 200, 250, 0.2));
+            color: var(--blue-accent);
+        }
+
+        .tools-icon {
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(236, 72, 153, 0.2));
+            color: #6d28d9;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .download-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .download-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .item-icon {
+            margin-right: 14px;
+            font-size: 18px;
+            width: 32px;
+            text-align: center;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .arrow-icon {
+            color: var(--text-primary);
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .download-item:hover .arrow-icon {
+            transform: translateX(5px);
+        }
+
+        /* Launchers specific styles */
+        .launcher-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .launcher-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .launcher-icon-wrapper {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 14px;
+            font-size: 18px;
+        }
+
+        .tlauncher-icon {
+            background: rgba(76, 217, 100, 0.2);
+            color: var(--emerald-accent);
+        }
+
+        .legacy-icon {
+            background: rgba(90, 200, 250, 0.2);
+            color: var(--cyan-accent);
+        }
+
+        .launcher-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .launcher-feature {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* Tools section */
+        .tools-section {
+            margin: 40px 0;
+        }
+
+        /* Guide section */
+        .guide-section {
+            margin: 60px 0;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .step:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .step-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .step-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .tips {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tips-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tips-list {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        .tips-list li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .window-title {
+                display: none;
+            }
+        }
+
+        /* Animation for appearing elements */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Button styles */
+        .btn {
+            background: linear-gradient(135deg, var(--blue-accent), var(--cyan-accent));
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 132, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 132, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 30px auto;
+        }
+
+        /* Security notice */
+        .security-notice {
+            background: linear-gradient(135deg, rgba(255, 72, 61, 0.1), rgba(255, 136, 77, 0.1));
+            border: 1px solid rgba(255, 136, 77, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 40px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .security-icon {
+            font-size: 24px;
+            color: var(--error-color);
+            margin-right: 16px;
+            margin-top: 4px;
+        }
+
+        .security-content h3 {
+            color: #ff884d;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-link {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .security-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="macos-window">
+        <!-- MacOS title bar -->
+        <div class="title-bar">
+            <div class="window-controls">
+                <div class="window-button close-btn"></div>
+                <div class="window-button minimize-btn"></div>
+                <div class="window-button maximize-btn"></div>
+            </div>
+            <div class="window-title">Все для майна</div>
+        </div>
+        
+        <div class="content">
+            <!-- Header section -->
+            <header class="header fade-in">
+                <div class="logo">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <h1>Все для майна</h1>
+                <p>Официальные ссылки для установки всего необходимого для Minecraft. Безопасно, быстро и удобно.</p>
+            </header>
+            
+            <!-- Navigation -->
+            <nav class="nav fade-in delay-1">
+                <a href="#java-section" class="nav-item active">Java</a>
+                <a href="#fabric-section" class="nav-item">Fabric Моды</a>
+                <a href="#launcher-section" class="nav-item">Лаунчеры</a>
+                <a href="#tools-section" class="nav-item">Инструменты</a>
+            </nav>
+            
+            <!-- Main content grid -->
+            <div class="cards-grid">
+                <!-- Java Section -->
+                <div class="card" id="java-section">
+                    <div class="card-header">
+                        <div class="card-icon java-icon">
+                            <i class="fas fa-mug-hot"></i>
+                        </div>
+                        <h2 class="card-title">Java Редакции</h2>
+                    </div>
+                    <p class="card-description">Выберите подходящую версию Java для вашей системы и версии Minecraft</p>
+                    
+                    <div class="download-list">
+                        <a href="https://www.oracle.com/java/technologies/javase/jdk21-downloads.html" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Java 21</div>
+                                <div class="item-description">Для Minecraft 1.20 и новее</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.oracle.com/java/technologies/javase/jdk17-downloads.html" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Java 17</div>
+                                <div class="item-description">Для Minecraft 1.18 - 1.19</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.oracle.com/java/technologies/javase/jdk16-downloads.html" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Java 16</div>
+                                <div class="item-description">Для Minecraft 1.17</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Java 8</div>
+                                <div class="item-description">Для Minecraft 1.16.5 и старше</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Fabric Section -->
+                <div class="card" id="fabric-section">
+                    <div class="card-header">
+                        <div class="card-icon fabric-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h2 class="card-title">Fabric Моды</h2>
+                    </div>
+                    <p class="card-description">Необходимые инструменты для установки и работы с модами в Minecraft</p>
+                    
+                    <div class="download-list">
+                        <a href="https://fabricmc.net/use/" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Fabric Loader</div>
+                                <div class="item-description">Основной загрузчик для модов Fabric</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://modrinth.com/mod/fabric-api" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Fabric API</div>
+                                <div class="item-description">Библиотека для разработки и совместимости модов</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://optifine.net/downloads" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">OptiFine</div>
+                                <div class="item-description">Оптимизация графики и повышение FPS</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Launchers Section -->
+                <div class="card" id="launcher-section">
+                    <div class="card-header">
+                        <div class="card-icon launcher-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h2 class="card-title">Лаунчеры</h2>
+                    </div>
+                    <p class="card-description">Популярные лаунчеры для запуска Minecraft с поддержкой модов</p>
+                    
+                    <div class="download-list">
+                        <a href="https://tlauncher.ru/" target="_blank" class="launcher-item">
+                            <div class="launcher-icon-wrapper tlauncher-icon">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">TLauncher</div>
+                                <div class="item-description">Установка Forge, Fabric, OptiFine в один клик</div>
+                                <div class="launcher-features">
+                                    <span class="launcher-feature">Простой интерфейс</span>
+                                    <span class="launcher-feature">Поддержка модов</span>
+                                    <span class="launcher-feature">Мультиаккаунты</span>
+                                </div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://legacylauncher.ru/ru" target="_blank" class="launcher-item">
+                            <div class="launcher-icon-wrapper legacy-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Legacy Launcher</div>
+                                <div class="item-description">Стабильный, быстрый и простой в использовании</div>
+                                <div class="launcher-features">
+                                    <span class="launcher-feature">204 тыс. игроков сегодня</span>
+                                    <span class="launcher-feature">23 тыс. онлайн</span>
+                                    <span class="launcher-feature">Стабильная работа</span>
+                                </div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://prismlauncher.org/" target="_blank" class="launcher-item">
+                            <div class="launcher-icon-wrapper" style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Prism Launcher</div>
+                                <div class="item-description">Мультиплатформенный лаунчер с поддержкой модов</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://multimc.org/" target="_blank" class="launcher-item">
+                            <div class="launcher-icon-wrapper" style="background: rgba(90, 200, 250, 0.2); color: var(--cyan-accent);">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">MultiMC</div>
+                                <div class="item-description">Легковесный лаунчер для управления инстансами</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Tools Section -->
+                <div class="card" id="tools-section">
+                    <div class="card-header">
+                        <div class="card-icon tools-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <h2 class="card-title">Инструменты</h2>
+                    </div>
+                    <p class="card-description">Дополнительные инструменты для создания контента в Minecraft</p>
+                    
+                    <div class="download-list">
+                        <a href="https://www.minecraftskins.com/" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Skin Editor</div>
+                                <div class="item-description">Редактор для создания и редактирования скинов</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://minecraft.fandom.com/wiki/Texture_Pack_Studio" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Texture Pack Studio</div>
+                                <div class="item-description">Создание текстурпаков и ресурспаков</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.curseforge.com/minecraft/mc-mods/world-downloader" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">World Downloader</div>
+                                <div class="item-description">Сохранение миров с серверов на ваш компьютер</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.planetminecraft.com/" target="_blank" class="download-item">
+                            <div class="item-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="item-details">
+                                <div class="item-title">Planet Minecraft</div>
+                                <div class="item-description">Сайт для поиска карт, скинов и текстур</div>
+                            </div>
+                            <div class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Notice -->
+            <div class="security-notice fade-in delay-3">
+                <div class="security-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="security-content">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Важно о безопасности</h3>
+                    <p>Мы предоставляем только ссылки на официальные источники. Никогда не скачивайте Minecraft с сомнительных сайтов. Всегда проверяйте URL перед скачиванием и используйте антивирус для сканирования файлов. Официальный сайт Minecraft: <a href="https://www.minecraft.net/" target="_blank" class="security-link">minecraft.net</a></p>
+                </div>
+            </div>
+            
+            <!-- Guide Section -->
+            <section id="guide-section" class="guide-section fade-in delay-4">
+                <h2 class="section-title">Руководство по установке</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 30px;">
+                    Пошаговая инструкция для новичков и опытных игроков
+                </p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Установка Java</h3>
+                        <p class="step-description">Выберите версию Java, соответствующую вашей версии Minecraft. Для новых версий игры нужна Java 16+, для старых - Java 8.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Установка лаунчера</h3>
+                        <p class="step-description">Выберите подходящий лаунчер. Для новичков рекомендуем TLauncher или Legacy Launcher за простоту настройки.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Добавление модов</h3>
+                        <p class="step-description">Для установки модов потребуется Fabric Loader или Forge. Большинство лаунчеров позволяют установить их автоматически.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Запуск игры</h3>
+                        <p class="step-description">После установки всех компонентов запустите игру через выбранный лаунчер. При первом запуске игра может загружать дополнительные файлы.</p>
+                    </div>
+                </div>
+                
+                <div class="tips">
+                    <h3 class="tips-title"><i class="fas fa-lightbulb"></i> Полезные советы</h3>
+                    <ul class="tips-list">
+                        <li>Всегда обновляйте Java до последней версии для вашей версии Minecraft</li>
+                        <li>Используйте официальные лаунчеры для предотвращения проблем с запуском</li>
+                        <li>Перед установкой модов проверяйте их совместимость с вашей версией игры</li>
+                        <li>Создавайте резервные копии сохранений перед установкой новых модов</li>
+                        <li>Для лучшей производительности установите OptiFine и настройте параметры графики</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer class="footer fade-in delay-5">
+                <p>Все ссылки ведут на официальные источники. Мы не храним и не распространяем файлы.</p>
+                <p style="margin-top: 8px;">© 2026 Все для майна · Безопасно · Надежно · Удобно</p>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Политика конфиденциальности</a>
+                    <a href="#" class="footer-link">Пользовательское соглашение</a>
+                    <a href="#" class="footer-link">Контакты</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active nav item
+                        document.querySelectorAll('.nav-item').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Add scroll animation to elements
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.fade-in');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = 1;
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Initialize animations
+            document.querySelectorAll('.fade-in').forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Trigger initial animation
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach((element, index) => {
+                    setTimeout(() => {
+                        element.style.opacity = 1;
+                        element.style.transform = 'translateY(0)';
+                    }, 200 * index);
+                });
+            }, 300);
+            
+            // Handle scroll animations
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll();
+            
+            // Handle active navigation based on scroll position
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-item');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current || 
+                        (current === '' && link.getAttribute('href') === '#java-section')) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
