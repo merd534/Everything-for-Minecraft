@@ -14,7 +14,9 @@
             --warning-color: #ff9f0a;
             --error-color: #ff453a;
             --background-color: #0d0f12;
+            --background-color-rgb: 13, 15, 18;
             --card-bg: #1a1c20;
+            --card-bg-rgb: 26, 28, 32;
             --border-color: #33373f;
             --text-primary: #f5f5f7;
             --text-secondary: #aeaeb2;
@@ -23,6 +25,24 @@
             --cyan-accent: #5ac8fa;
             --purple-accent: #af52de;
             --shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light {
+            --background-color: #f5f5f7;
+            --background-color-rgb: 245, 245, 247;
+            --card-bg: #ffffff;
+            --card-bg-rgb: 255, 255, 255;
+            --border-color: #e5e5e7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --blue-accent: #007aff;
+            --emerald-accent: #34c759;
+            --cyan-accent: #5ac8fa;
+            --purple-accent: #af52de;
+            --shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            --error-color: #ff3b30;
+            --success-color: #34c759;
+            --warning-color: #ffcc00;
         }
 
         * {
@@ -37,6 +57,20 @@
             color: var(--text-primary);
             line-height: 1.5;
             min-height: 100vh;
+            position: relative; /* Для волн и прогресс-бара */
+            overflow-x: hidden;
+        }
+
+        /* Progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan-accent), var(--blue-accent));
+            width: 0;
+            transition: width 0.3s ease;
+            z-index: 200;
         }
 
         .macos-window {
@@ -57,6 +91,14 @@
             align-items: center;
             padding: 0 12px;
             border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.light .title-bar {
+            background: #f5f5f7;
+            border-bottom: 1px solid #e5e5e7;
         }
 
         .window-controls {
@@ -91,6 +133,30 @@
             font-weight: 500;
         }
 
+        .theme-toggle {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        body.light .theme-toggle .fa-moon {
+            display: none;
+        }
+
+        body.light .theme-toggle .fa-sun {
+            display: inline;
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
         /* Main content */
         .content {
             padding: 30px;
@@ -101,6 +167,7 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 20px 0;
+            position: relative; /* Для позиционирования particles */
         }
 
         .logo {
@@ -109,15 +176,46 @@
             background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite; /* Пульсация при загрузке */
+        }
+
+        .logo:hover {
+            animation: rotate 1.5s ease-in-out; /* Вращение при наведении */
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         .header h1 {
             font-size: 42px;
             font-weight: 700;
             margin-bottom: 16px;
+            position: relative;
+            display: inline-block;
             background: linear-gradient(135deg, var(--cyan-accent), var(--blue-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .header h1::after {
+            content: "Все для майна"; /* Дублируем текст для второго слоя */
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #ff69b4, var(--purple-accent)); /* Розово-фиолетовый */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Глубина */
         }
 
         .header p {
@@ -127,12 +225,43 @@
             margin: 0 auto;
         }
 
+        /* Particles canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Не мешает кликам */
+            opacity: 0.5; /* Subtle */
+            z-index: -1; /* За текстом */
+        }
+
+        /* Wave animation canvas */
+        #wave-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            opacity: 0.15; /* Лёгкий, не отвлекает */
+            z-index: -2; /* За всем контентом */
+        }
+
         /* Navigation */
         .nav {
             display: flex;
             justify-content: center;
             margin: 30px 0;
             gap: 24px;
+            position: sticky;
+            top: 28px; /* После title-bar */
+            z-index: 50;
+            background: rgba(var(--background-color-rgb), 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            transition: background 0.3s ease;
         }
 
         .nav-item {
@@ -159,18 +288,20 @@
         }
 
         .card {
-            background: var(--card-bg);
+            background: rgba(var(--card-bg-rgb), 0.6);
+            backdrop-filter: blur(10px);
             border-radius: 18px;
             padding: 24px;
             transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), var(--shadow);
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 10px rgba(90, 200, 250, 0.3);
             border-color: rgba(255, 255, 255, 0.2);
         }
 
@@ -189,6 +320,17 @@
             justify-content: center;
             margin-right: 16px;
             font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-icon:hover {
+            animation: icon-hover 0.8s ease-in-out;
+        }
+
+        @keyframes icon-hover {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(15deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         .java-icon {
@@ -295,6 +437,11 @@
             justify-content: center;
             margin-right: 14px;
             font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .launcher-icon-wrapper:hover {
+            animation: icon-hover 0.8s ease-in-out;
         }
 
         .tlauncher-icon {
@@ -331,9 +478,11 @@
         .guide-section {
             margin: 60px 0;
             padding: 30px;
-            background: var(--card-bg);
+            background: rgba(var(--card-bg-rgb), 0.6);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), var(--shadow);
         }
 
         .section-title {
@@ -355,6 +504,7 @@
 
         .step {
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
             border-radius: 16px;
             padding: 25px;
             text-align: center;
@@ -442,27 +592,98 @@
             color: var(--text-primary);
         }
 
+        /* Security notice */
+        .security-notice {
+            background: linear-gradient(135deg, rgba(255, 72, 61, 0.1), rgba(255, 136, 77, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 136, 77, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 40px 0;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), var(--shadow);
+        }
+
+        .security-icon {
+            font-size: 24px;
+            color: var(--error-color);
+            margin-right: 16px;
+            margin-top: 4px;
+        }
+
+        .security-content h3 {
+            color: #ff884d;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-link {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .security-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--blue-accent), var(--cyan-accent));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 132, 255, 0.3);
+            z-index: 100;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+        }
+
+        #back-to-top:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 132, 255, 0.4);
+        }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
             }
-            
+
             .header h1 {
                 font-size: 32px;
             }
-            
+
             .nav {
                 flex-wrap: wrap;
                 gap: 12px;
             }
-            
+
             .cards-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .window-title {
                 display: none;
+            }
+
+            #back-to-top {
+                bottom: 60px; /* Чтобы не перекрывать мобильную навигацию */
             }
         }
 
@@ -533,44 +754,15 @@
             gap: 16px;
             margin: 30px auto;
         }
-
-        /* Security notice */
-        .security-notice {
-            background: linear-gradient(135deg, rgba(255, 72, 61, 0.1), rgba(255, 136, 77, 0.1));
-            border: 1px solid rgba(255, 136, 77, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 40px 0;
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .security-icon {
-            font-size: 24px;
-            color: var(--error-color);
-            margin-right: 16px;
-            margin-top: 4px;
-        }
-
-        .security-content h3 {
-            color: #ff884d;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .security-link {
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-        
-        .security-link:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
+    <!-- Progress bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Wave canvas -->
+    <canvas id="wave-canvas"></canvas>
+
     <div class="macos-window">
         <!-- MacOS title bar -->
         <div class="title-bar">
@@ -580,6 +772,10 @@
                 <div class="window-button maximize-btn"></div>
             </div>
             <div class="window-title">Все для майна</div>
+            <div class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </div>
         </div>
         
         <div class="content">
@@ -589,6 +785,7 @@
                     <i class="fas fa-cube"></i>
                 </div>
                 <h1>Все для майна</h1>
+                <canvas id="particles-canvas"></canvas> <!-- Particles здесь -->
                 <p>Официальные ссылки для установки всего необходимого для Minecraft. Безопасно, быстро и удобно.</p>
             </header>
             
@@ -930,8 +1127,41 @@
         </div>
     </div>
 
+    <!-- Back to top button -->
+    <button id="back-to-top" aria-label="Вернуться наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Theme toggle logic
+            const themeToggle = document.getElementById('theme-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+
+            if (savedTheme === 'light' || (savedTheme === null && !prefersDark)) {
+                document.body.classList.add('light');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light');
+                localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+            });
+
+            // Back to top logic
+            const backToTop = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -1010,8 +1240,120 @@
                     }
                 });
             });
+
+            // Particles logic (vanilla JS, lightweight)
+            const particlesCanvas = document.getElementById('particles-canvas');
+            const particlesCtx = particlesCanvas.getContext('2d');
+            const header = document.querySelector('.header');
+            particlesCanvas.width = header.offsetWidth;
+            particlesCanvas.height = header.offsetHeight;
+
+            // Resize particles canvas on window resize
+            window.addEventListener('resize', () => {
+                particlesCanvas.width = header.offsetWidth;
+                particlesCanvas.height = header.offsetHeight;
+            });
+
+            // Particle class
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * particlesCanvas.width;
+                    this.y = Math.random() * particlesCanvas.height;
+                    this.size = Math.random() * 3 + 1; // Маленькие кубики
+                    this.speedX = Math.random() * 0.5 - 0.25; // Лёгкое парение в стороны
+                    this.speedY = Math.random() * 0.5 + 0.1; // Медленное падение
+                    this.color = `rgba(90, 200, 250, ${Math.random() * 0.5 + 0.2})`; // Subtle cyan с вариацией
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    // Reset if out of bounds
+                    if (this.y > particlesCanvas.height) this.y = 0;
+                    if (this.x > particlesCanvas.width) this.x = 0;
+                    if (this.x < 0) this.x = particlesCanvas.width;
+                }
+
+                draw() {
+                    particlesCtx.fillStyle = this.color;
+                    particlesCtx.fillRect(this.x, this.y, this.size, this.size); // Пиксельные кубики
+                }
+            }
+
+            const particles = [];
+            for (let i = 0; i < 25; i++) { // Мало частиц для лёгкости
+                particles.push(new Particle());
+            }
+
+            function animateParticles() {
+                particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+
+            setInterval(animateParticles, 60); // Редкое обновление для производительности
+
+            // Progress bar logic
+            const progressBar = document.getElementById('progress-bar');
+            let progress = 0;
+            const simulateProgress = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.random() * 10;
+                    progressBar.style.width = `${progress}%`;
+                }
+            }, 300);
+
+            window.addEventListener('load', () => {
+                clearInterval(simulateProgress);
+                progressBar.style.width = '100%';
+                setTimeout(() => {
+                    progressBar.style.opacity = 0;
+                    progressBar.style.transition = 'opacity 0.5s ease';
+                }, 500);
+            });
+
+            // Wave animation logic
+            const waveCanvas = document.getElementById('wave-canvas');
+            const waveCtx = waveCanvas.getContext('2d');
+            let waveOffset = 0;
+            let lastScrollY = window.scrollY;
+            waveCanvas.width = window.innerWidth;
+            waveCanvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                waveCanvas.width = window.innerWidth;
+                waveCanvas.height = window.innerHeight;
+            });
+
+            function drawWaves() {
+                waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+                waveCtx.lineWidth = 2;
+                waveCtx.strokeStyle = 'rgba(90, 200, 250, 0.3)'; // Cyan волны
+
+                for (let i = 0; i < 4; i++) { // 4 волны для глубины
+                    waveCtx.beginPath();
+                    waveCtx.moveTo(0, waveCanvas.height / 2);
+                    for (let x = 0; x < waveCanvas.width; x++) {
+                        const y = Math.sin((x + waveOffset * (i + 1)) * 0.01 + i) * 50 + waveCanvas.height / 2 + i * 20;
+                        waveCtx.lineTo(x, y);
+                    }
+                    waveCtx.stroke();
+                }
+            }
+
+            function animateWaves() {
+                const scrollDelta = window.scrollY - lastScrollY;
+                waveOffset += scrollDelta * 0.05; // Скорость волн от скролла
+                lastScrollY = window.scrollY;
+                drawWaves();
+                requestAnimationFrame(animateWaves);
+            }
+
+            animateWaves();
         });
     </script>
 </body>
 </html>
-
